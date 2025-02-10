@@ -39,113 +39,137 @@ const data = [
 
 //Utility//
 function renderToDom(divId, textToRender) {
-  const selectedDiv = document.querySelector(divId);
-  selectedDiv.innerHTML = textToRender;
+ const selectedDiv = document.querySelector(divId);
+ selectedDiv.innerHTML = textToRender;
 }
+
 //Pic Container// 
 const picArea = () => {
 const domString = `
  <div class="container-lg" id="picContainer">
   <div class="row">
    <h3>Welcome To Hogwart's Virtual Sorting Ceremony</h3>
- <div class="row">
+  <div class="row">
   <img src="https://media.tenor.com/vkDuuNm40XoAAAAM/hogwarts-legacy-warner-bros-interactive-entertainment.gif" class="img-fluid" alt="Animated Sorting Hat">
  </div>
  </div>
  `;
 renderToDom('#picContainer', domString);
-};  
-//field/sort/reset//
+}; 
+
+//Form Field//
 const formField = () => {
 const domString = `
-<h5 class="card-text">
+ <h5 class="card-text">
   Welcome to sorting session at Hogwarts School of Witchcraft and Wizardry.
   <p>The sorting hat will sort each student by name, into one of the four houses: Gryffindor, Hufflepuff, Ravenclaw, and Slytherin.</p>
   <p>The sorting hat will take into account your personality, values, and preferences to determine the house that best suits you.</p>
-    <p>Good luck!</p>
-<div class="card-body">
+  <p>Good luck!</p>
+ </h5>
+ <div class="card-body">
   <div class="d-flex justify-content-center">
-   <input class="form-control form-control-sm" type="text" placeholder="Student's Name" aria-label=".form-control-sm example">
+   <input class="form-control form-control-sm" type="text" id="studentName" placeholder="Student's Name">
   </div>
-    <button class="btn btn-outline-light" id="sort">Sort</button>  
-    <button class="btn btn-light" id="reset">Reset</button>
-  </div>`;
-renderToDom('#forceField', domString); 
+  <button class="btn btn-outline-light" id="sort">Sort</button>  
+  <button class="btn btn-light" id="reset">Reset</button>
+ </div>
+ `;
+renderToDom('#forceField', domString);
+
+
+ // Add event listener for the sort button
+document.querySelector('#sort').addEventListener('click', (e) => {
+ e.preventDefault();
+  const studentName = document.querySelector('#studentName').value;
+  if (studentName) {
+   sortHat(studentName);
+   }
+ });
 };
 
-//SortingHat//
-const sortHat = () => {
-const houses = ['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin'];
-const randomHouse = Math.floor(Math.random() * houses.length);
-const house = houses[randomHouse];
-renderToDom('#sortHat', house);
+//Sorting Hat- MVP//
+const sortHat = (studentName) => {
+ const houses = ['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin'];
+ const randomHouse = Math.floor(Math.random() * houses.length);
+ const house = houses[randomHouse];
+
+// Create a new student object
+const newStudent = {
+ id: data.length + 1, // Generate a new id
+ name: studentName,
+ house: house,
+ imageUrl: 'https://www.urbanbodyjewelry.com/cdn/shop/files/14kt-gold-sorting-hat-threadless-top_600x.jpg' // Placeholder image URL
+};
+
+// Add the new student to the data array
+data.push(newStudent);
+
+// Update the DOM with the new student card
+cardsOnDom(data);
+
 return house;
 };
+// Create a new student object
 
-
-
-//filter Button Row//
+//Filter Button Row//
 const filterButtons = () => {    
-const domString = `
-<div class="container text-center">
-  <h6>Filter Students by House</h6>
-  <button class="btn btn-outline-danger" id="gryffindor">Gryffindor</button>
-  <button class="btn btn-outline-warning" id="hufflepuff">Hufflepuff</button>
-  <button class="btn btn-outline-info" id="ravenclaw">Ravenclaw</button>
-  <button class="btn btn-outline-success" id="slytherin">Slytherin</button>
-  <button class="btn btn-dark" id="all">All</button>  
-</div>
+ const domString = `
+  <div class="container text-center">
+   <h6>Filter Students by House</h6>
+   <button class="btn btn-outline-danger" id="gryffindor">Gryffindor</button>
+   <button class="btn btn-outline-warning" id="hufflepuff">Hufflepuff</button>
+   <button class="btn btn-outline-info" id="ravenclaw">Ravenclaw</button>
+   <button class="btn btn-outline-success" id="slytherin">Slytherin</button>
+   <button class="btn btn-dark" id="all">All</button>  
+ </div>
 `;
 renderToDom('#filterContainer', domString);
 };
 
-//first Year cards//
+//First Year cards
 const cardsOnDom = (data) => {
-  let domString = '';
+ let domString = '';
   for (const item of data) {
-    domString += `
-    <div class="card-group">
-   <div class="card">
-    <div class="card-body">
-    <div class="card" style="width: 10rem;">
-     <img src="${item.imageUrl}" class="card-img-top" alt="${item.name}">
-     <h5 class="card-title">${item.name}</h5>
-     <p class="card-text">${item.house}</p>
-     <button class="btn btn-dark" id="delete--${item.id}">expel</button>
-    </div>
-    </div>
+  domString += `
+   <div class="card-group">
+    <div class="card">
+     <div class="card-body">
+     <div class="card" style="width: 10rem;">
+      <img src="${item.imageUrl}" class="card-img-top" alt="${item.name}">
+      <h5 class="card-title">${item.name}</h5>
+      <p class="card-text">${item.house}</p>
+      <button class="btn btn-dark" id="delete--${item.id}">expel</button>
+     </div>
+   </div>
   </div>
-   `;
+ `;
   }
-  renderToDom('#cardFirstYear', domString);
-};
+ renderToDom('#cardFirstYear', domString);
+}
 
-
-//Volds Army//
+//Volds Army
 const voldsArmy = () => {
  const domString = `
   <div class="card-group">
-   <div class="card-body">
-   <div class="card" style="width: auto;">
-    <img src="https://media3.giphy.com/media/BnhIfw9hBDlLi/giphy.gif" class="card-img-top" alt="Voldemort">
-    <div class="card-body">
-      <h3 class="card-title">Voldemort's Militia</h3>
-      <button class="btn btn-light" id="Voldemoldy">Rebound Army</button>
-    </div>
+  <div class="card-body">
+  <div class="card" style="width: auto;">
+   <img src="https://media3.giphy.com/media/BnhIfw9hBDlLi/giphy.gif" class="card-img-top" alt="Voldemort">
+  <div class="card-body">
+   <h3 class="card-title">Voldemort's Militia</h3>
   </div>
-  `;
+ </div>
+ </div>
+ `;
   renderToDom('#cardVoldy', domString);
 };
-
-
 
 //Event Listeners//
 let cardVoldy = (arr) => {
   let domString = '';
   for (const item of arr) {
-    domString += `
-    <div class="card-group">
-   <div class="card">
+   domString += `
+   <div class="card-group">
+    <div class="card">
     <div class="card-body">
     <div class="card" style="width: 9rem;">
      <img src="${item.imageUrl}" class="card-img-top" alt="${item.name}">
@@ -154,7 +178,7 @@ let cardVoldy = (arr) => {
      <button class="btn btn-dark" id="delete--${item.id}">expel</button>
     </div>
     </div>
-  </div>
+   </div>
    `;
   }
   renderToDom('#cardVoldy', domString);
@@ -176,27 +200,56 @@ document.querySelector('#filterContainer').addEventListener('click', (e) => {
     cardsOnDom(slytherin);
   } else if (e.target.id === 'all') {
     cardsOnDom(data);
+    expelCardsOnDom(expelledStudent);
+  }
+});
+
+
+const expelCardsOnDom = (array) =>{
+ let domString = '';
+ array.forEach((item) => {
+  domString += `
+   <div class="card-group">
+    <div class="card">
+    <h5 class="card-title">Voldemort's Militia</h5>
+    <div class="card-body">
+    <div class="card" style="width: 9rem;">
+     <img src="${item.imageUrl}" class="card-img-top" alt="${item.name}">
+     <h5 class="card-title">${item.name}</h5>
+      <p class="card-text">${item.house}</p>
+      <button class="btn btn-dark" id="delete--${item.id}">expel</button>
+      </div>
+      </div>
+    </div>
+    `;
   });
-
-
-let expelStudent = (e) => { 
- e.preventDefault();
- if (e.target.id.includes("delete")) {
- const [, id] = e.target.id.split('--');
- const index = data.findIndex((item) => item.id === Number(id));
- arr.push(data.splice(index, 1)[0]);
- cardVoldy(arr)
-}
-cardsOnDom(data);
+  renderToDom('#cardVoldy', domString);
 };
-let startApp = () => {
-  picArea();
-  formField();
-  sortHat();
-  filterButtons();
-  cardsOnDom(data);
-  voldsArmy();
-  expelStudent();
- };
+
+//Expel Student//
+const displayStudent = document.querySelector('#cardFirstYear');
+const expelledStudent =[];
+
+displayStudent.addEventListener('click', (e) => {
+  if (e.target.id.includes('delete')) {
+    const studentId = e.target.id.split('--')[1];
+    const studentIndex = data.findIndex((item) => item.id === parseInt(studentId));
+    expelledStudent.push(data[studentIndex]);
+    data.splice(studentIndex, 1);
+    cardsOnDom(data);
+    expelCardsOnDom(expelledStudent); //puts expelled students in Voldey's Militia//
+  }
+});
+
+
+const startApp = () => {
+ picArea();
+ formField();
+ sortHat();
+ filterButtons();
+ cardsOnDom(data);
+ voldsArmy();
+ document.querySelector('#cardFirstYear').addEventListener('click', expelStudent);
+};
 
 startApp();
