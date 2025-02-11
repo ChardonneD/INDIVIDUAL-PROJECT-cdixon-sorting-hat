@@ -46,9 +46,9 @@ function renderToDom(divId, textToRender) {
 //Pic Container// 
 const picArea = () => {
 const domString = `
- <div class="container-lg" id="picContainer">
+ <div class="container-sm" id="picContainer">
   <div class="row">
-   <h3>Welcome To Hogwart's Virtual Sorting Ceremony</h3>
+   <h3 img src= >Welcome To Hogwart's Virtual Sorting Ceremony</h3>
   <div class="row">
   <img src="https://media.tenor.com/vkDuuNm40XoAAAAM/hogwarts-legacy-warner-bros-interactive-entertainment.gif" class="img-fluid" alt="Animated Sorting Hat">
  </div>
@@ -217,7 +217,7 @@ const expelCardsOnDom = (array) =>{
      <img src="${item.imageUrl}" class="card-img-top" alt="${item.name}">
      <h5 class="card-title">${item.name}</h5>
       <p class="card-text">${item.house}</p>
-      <button class="btn btn-dark" id="delete--${item.id}">expel</button>
+      <button class="btn btn-dark" id="delete--${item.id}">Expel</button>
       </div>
       </div>
     </div>
@@ -249,7 +249,7 @@ const startApp = () => {
  filterButtons();
  cardsOnDom(data);
  voldsArmy();
- document.querySelector('#cardFirstYear').addEventListener('click', expelStudent);
+ document.querySelector('#cardFirstYear').addEventListener('click', expelledStudent);
 };
 
 startApp();
